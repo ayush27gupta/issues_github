@@ -1,0 +1,17 @@
+.left-repo{
+    display: flex;
+}
+.repo-container{
+    display: flex;
+    justify-content: space-between;
+}
+.right-repo{
+    display:flex;
+}
+
+.box-repo{
+    margin:5px;
+    border:0.1px solid grey;
+    padding:2px 20px;
+    border-radius: 0.5rem;
+}

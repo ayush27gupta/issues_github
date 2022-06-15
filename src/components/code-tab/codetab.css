@@ -1,0 +1,9 @@
+.code-tab{
+    margin:15px 25px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.box-code{
+    margin: 0 10px;
+}
