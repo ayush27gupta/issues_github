@@ -1,9 +1,11 @@
 import React from 'react'
 import Banner from '../banner/Banner'
 import CodeTab from '../code-tab/CodeTab'
-import Issues from '../issues/Issues'
 import Navbar from '../navbar/Navbar'
 import RepoTab from '../repo-tab/RepoTab'
+import IssuesTable from '../issues/IssuesTable'
+
+// import IssueGrid from '../issues/IssueGrid'
 
 const Main = () => {
   return (
@@ -12,7 +14,10 @@ const Main = () => {
         <RepoTab/>
         <CodeTab/>
         <Banner/>
-        <Issues/>
+        {/* <Filters/> */}
+        {/* <Issues/> */}
+        <IssuesTable/>
+        {/* <IssueGrid/> */}
     </div>
   )
 }

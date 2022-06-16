@@ -1,12 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
-import Issues from './components/issues/Issues';
+
 import Main from './components/main/Main';
+import DataProvider from './components/context/DataContext';
 
 function App() {
   return (
     <div className="App">
-      <Main/>
+      <DataProvider>
+        <Main/>
+      </DataProvider>
+      
     </div>
   );
 }

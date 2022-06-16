@@ -1,0 +1,22 @@
+
+
+.filters{
+  display: flex;
+  justify-content: flex-start;
+  border:0.5px solid black;
+  width: 65vw;
+  margin-left:  16rem;
+  margin-right:  16rem;
+  margin-bottom:  1.2rem;
+  background-color: #ffffe6;
+  border-radius: 0.5rem;
+
+}
+
+.labels-filter{
+    height:3.5rem;
+    border:0.5px solid black;
+    width:8rem;
+    margin-top: 1rem;
+    border-radius: 0.2rem;
+}
