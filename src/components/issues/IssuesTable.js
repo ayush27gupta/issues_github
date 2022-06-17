@@ -12,19 +12,15 @@ import { useEffect,useContext } from 'react';
 import { DataContext } from '../context/DataContext';
 import { useNavigate } from 'react-router-dom';
 
-
-
 import '../issues/issues.css'
-
-
 
 export default function BasicTable() {
     const [issueData,setIssueData]=useContext(DataContext);
     const [allIssues,setAllIssues]=useState([...issueData]);
-    const [state, setState] = useState('');
-    const [label,setLabel]=useState('');
-    const [assignee,setAssignee]=useState('');
-    const [labelsArray,setLabelsArray]=useState([]);
+    const [state, setState]=useState('all');
+    const [label, setLabel]=useState('');
+    const [assignee, setAssignee]=useState('');
+    const [labelsArray, setLabelsArray]=useState([]);
     const [assigneeArray,setAssigneeArray]=useState([]);
 
     useEffect(() => {
@@ -51,6 +47,7 @@ export default function BasicTable() {
 
     const handleChange = (e) => {
       const stateValue=e.target.value;
+      setState(stateValue);
       if(stateValue!=="all")
       {
         const newData=allIssues.filter(item=>item.state===stateValue);
@@ -71,8 +68,7 @@ export default function BasicTable() {
         const labels = issue?.labels?.map(label => label?.name);
         return labels.includes(currentLabel)
       })
-      setIssueData(issues)
-      
+      setIssueData(issues || [])
     }
 
     const handleAssignee=(e)=>{
@@ -82,8 +78,7 @@ export default function BasicTable() {
         const assignees=issue?.assignees?.map(assignee=>assignee?.login);
         return assignees.includes(currentAssignee)
       })
-      console.log(issues);
-      setIssueData(issues);
+      setIssueData(issues || []);
     }
 
 
@@ -95,7 +90,32 @@ export default function BasicTable() {
       const issueId=e.target.value;
       navigate("/issue",{state:{issueID:issueId}})
     }
-    
+
+  const filterIssues = () => {
+    // return allIssues
+    return allIssues.filter(issue => {
+     
+      if(state != 'all' && state != issue.state.toLowerCase()) {
+        return false
+      }
+      let hasAssignee = true
+      if(assignee) {
+        const assignees = issue?.assignees?.map(assignee=>assignee?.login);
+        hasAssignee = assignees.includes(assignee)
+      }
+      let hasLabel = true
+      if(label) {
+        const labels = issue?.labels?.map(label=>label?.name);
+        hasLabel = labels.includes(label)
+      }
+
+      return hasAssignee && hasLabel
+    })
+  }
+
+  const filtered = filterIssues();
+  console.log(filtered)
+
 
   return (
     <>
@@ -134,7 +154,8 @@ export default function BasicTable() {
       </div>  
     </div>
     
-    <TableContainer component={Paper} style={{width:"65vw",margin:"auto" ,backgroundColor:"#ffffe6",border:"0.5px solid black"}}>
+    {/* <TableContainer component={Paper} style={{width:"65vw",margin:"auto" ,backgroundColor:"#ffffe6",border:"0.5px solid black"}}> */}
+    <TableContainer component={Paper} style={{width:"65vw",margin:"auto" ,backgroundColor:"#ebebeb",border:"0.5px solid black"}}>
       <Table sx={{ minWidth: 400 }} aria-label="simple table">
       <TableHead>
           <TableRow>
@@ -146,7 +167,7 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {issueData.map((issue) => (
+          {filtered.map((issue) => (
             <TableRow
               key={issue.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

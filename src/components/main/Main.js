@@ -17,16 +17,11 @@ const Main = () => {
         <CodeTab/>
         <Banner/>
         <BrowserRouter>
-        {/* <Filters/> */}
-        {/* <Issues/> */}
-        <Routes>
-          
-          <Route path="/" element={<IssuesTable/>}/>
-          <Route path='/issue' element={<IssuePage/>}/>
-        </Routes>
-        
+          <Routes>
+            <Route path="/" element={<IssuesTable/>}/>
+            <Route path='/issue' element={<IssuePage/>}/>
+          </Routes>
         </BrowserRouter>
-        {/* <IssueGrid/> */}
     </div>
   )
 }
