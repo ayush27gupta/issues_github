@@ -10,13 +10,12 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useEffect,useContext } from 'react';
 import { DataContext } from '../context/DataContext';
+import { useNavigate } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+
+
 import '../issues/issues.css'
+
 
 
 export default function BasicTable() {
@@ -71,20 +70,22 @@ export default function BasicTable() {
       }
 
     };
+
+
     const handleLabel = (e) =>{
       
-      const currentLabel=e.target.value.name;
+      const currentLabel=e.target.value;
       setLabel(currentLabel);
       console.log(currentLabel);
       // const newData=allIssues.filter(items=>items.labels.map(item=>item.name===currentLabel))
       const newData=allIssues.filter(issue=>issue.labels.forEach(item=>item.name===currentLabel))  
-      console.log(newData);    
+      console.log("new",newData);    
       // allIssues.filter(item.forEach)
 
     }
 
     const handleAssignee=(e)=>{
-      const currentAssignee=e.target.value.login;
+      const currentAssignee=e.target.value;
       setAssignee(currentAssignee);
       console.log(currentAssignee);
 
@@ -92,6 +93,19 @@ export default function BasicTable() {
       console.log(newData);
       // console.log(allIssues.filter(issue=>issue.assignees.map(item=>item.login===currentAssignee)));
       
+    }
+
+
+
+    let navigate=useNavigate();
+
+    const handleClick =(e)=>{
+      e.preventDefault();
+      const issueId=e.target.value;
+
+      console.log(issueId);
+
+      navigate("/issue",{state:{issueID:issueId}})
     }
     
 
@@ -198,6 +212,7 @@ export default function BasicTable() {
       </div>
       
     </div>
+    {/* <TableContainer component={Paper} style={{width:"65vw",margin:"auto" ,backgroundColor:"#ffffe6",border:"0.5px solid black"}}> */}
     <TableContainer component={Paper} style={{width:"65vw",margin:"auto" ,backgroundColor:"#ffffe6",border:"0.5px solid black"}}>
       <Table sx={{ minWidth: 400 }} aria-label="simple table">
       <TableHead>
@@ -217,7 +232,8 @@ export default function BasicTable() {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {issue.title}
+                <li className='issue-title' value={issue.id} onClick={handleClick}  style={{color:"black",padding:"0",margin:'0'}}>{issue.title}</li>
+                {/* {console.log("issue",issue.id)} */}
               </TableCell>
               <TableCell component="th" scope="row">
                 {issue.state}
@@ -226,12 +242,13 @@ export default function BasicTable() {
                 {issue.created_at.substring(0,10)}
               </TableCell>
               <TableCell component="th" scope="row">
-                {issue.assignees.map(item=>item.login)}
+                {/* <img src={issue.assignees.map(item=>item.avatar_url)} height="20px" width="20px" alt="img" style={{border:"0.5px solid white",borderRadius:"50%"}}></img>  */}
+                {issue.assignees.map(item=>item.login)}  
               </TableCell>
               <TableCell component="th" scope="row">
-              <span class="badge badge-pill badge-danger">{issue.labels.map(item=>item.name)}</span>
+              <span className="badge badge-pill badge-primary">{issue.labels.map(item=>item.name)}</span>
               </TableCell>
-              {/* <TableCell align="right">{row.calories}</TableCell> */}
+             
             </TableRow>
           ))}
         </TableBody>

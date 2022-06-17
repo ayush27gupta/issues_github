@@ -39,3 +39,16 @@
 .label{
     margin-left: 1rem;
 }
+
+button{
+    border:none;
+    background-color: #ffffe6;
+}
+
+.issue-card{
+    background-color: #ffffe6;
+}
+
+.issue-title{
+    cursor: pointer;
+}

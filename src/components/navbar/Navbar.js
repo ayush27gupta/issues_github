@@ -26,7 +26,9 @@ const Navbar = () => {
         </li>
       </ul>
 
-        <img src="https://t3.ftcdn.net/jpg/01/81/15/52/240_F_181155209_RbeeKxw1aoThTBV9Q6NWxeGNwsHhL1ad.jpg" alt="" height="50px" width="50px" />
+        <img src="https://t3.ftcdn.net/jpg/01/81/15/52/240_F_181155209_RbeeKxw1aoThTBV9Q6NWxeGNwsHhL1ad.jpg" alt="" height="30px" width="30px" />
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="" height="30px" width="30px" style={{marginLeft:"1rem"}} />
+
     </div>
   </nav>
 
