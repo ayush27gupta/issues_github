@@ -5,6 +5,7 @@
   justify-content: flex-start;
   border:0.5px solid black;
   width: 65vw;
+  height:5.5rem;
   margin-left:  16rem;
   margin-right:  16rem;
   margin-bottom:  1.2rem;
@@ -19,4 +20,22 @@
     width:8rem;
     margin-top: 1rem;
     border-radius: 0.2rem;
+}
+.assignee-filter{
+    height:3.5rem;
+    border:0.5px solid black;
+    width:8rem;
+    margin-top: 1rem;
+    border-radius: 0.2rem;
+}
+.state-filter{
+    height:3.5rem;
+    border:0.5px solid black;
+    width:8rem;
+    margin-top: 1rem;
+    border-radius: 0.2rem;
+}
+
+.label{
+    margin-left: 1rem;
 }

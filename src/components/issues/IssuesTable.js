@@ -23,15 +23,28 @@ export default function BasicTable() {
     // const [data,setData]=useState([]);
     const [issueData,setIssueData]=useContext(DataContext);
     const [allIssues,setAllIssues]=useState([...issueData]);
-    const [state, setState] = React.useState('');
-    const [labels,setLabels]=useState([]);
+    const [state, setState] = useState('');
+    const [label,setLabel]=useState('');
+    const [assignee,setAssignee]=useState('');
+    const [labelsArray,setLabelsArray]=useState([]);
+    const [assigneeArray,setAssigneeArray]=useState([]);
 
     useEffect(() => {
      
       axios.get('https://api.github.com/repos/pallets/click/labels').then(
           res=>{
               const labelsFetched=res.data;
-              setLabels(labelsFetched);
+              setLabelsArray(labelsFetched);
+          }
+      )
+        
+      }, [])
+    useEffect(() => {
+     
+      axios.get('https://api.github.com/repos/pallets/click/assignees').then(
+          res=>{
+              const assigneesFetched=res.data;
+              setAssigneeArray(assigneesFetched);
           }
       )
         
@@ -60,22 +73,34 @@ export default function BasicTable() {
     };
     const handleLabel = (e) =>{
       
-      const currentLabel=e.target.value;
+      const currentLabel=e.target.value.name;
+      setLabel(currentLabel);
       console.log(currentLabel);
       // const newData=allIssues.filter(items=>items.labels.map(item=>item.name===currentLabel))
-      const lab=allIssues.map(item=>item.labels);
-      console.log(lab);
-      const labe=lab.filter(item=>item.map(items=>items.name===currentLabel));
-      console.log(labe);
+      const newData=allIssues.filter(issue=>issue.labels.forEach(item=>item.name===currentLabel))  
+      console.log(newData);    
+      // allIssues.filter(item.forEach)
+
+    }
+
+    const handleAssignee=(e)=>{
+      const currentAssignee=e.target.value.login;
+      setAssignee(currentAssignee);
+      console.log(currentAssignee);
+
+      const newData=allIssues.map(issue=>issue.assignees.forEach(item=>item.login===currentAssignee));
+      console.log(newData);
+      // console.log(allIssues.filter(issue=>issue.assignees.map(item=>item.login===currentAssignee)));
+      
     }
     
 
   return (
     <>
     <div className="filters">
-      <div className="state-filter filter">
+      <div className="filter">
         
-      <Box sx={{ width:"10vw",margin:"1rem",backgroundColor:"white",color:"black" }}>
+      {/* <Box sx={{ width:"10vw",margin:"1rem",backgroundColor:"white",color:"black" }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">State</InputLabel>
         <Select
@@ -90,22 +115,86 @@ export default function BasicTable() {
           <MenuItem value={"closed"}>closed</MenuItem>
         </Select>
       </FormControl>
-    </Box>
+    </Box> */}
+    <label htmlFor="labels" className="label">State:</label>
+    <select name="state" id="state" onChange={handleChange} className="state-filter" >
+      <option value="all">All</option>
+      <option value="open">Open</option>
+      <option value="closed">Closed</option>
+    </select>
+
 
       </div>
 
-      <div className=" filter">
-      <label htmlFor="labels">Labels:</label>
+      <div className="filter">
+      <label htmlFor="labels" className="label">Labels:</label>
 
-        <select name="labels" id="labels" onChange={handleLabel} className="labels-filter" >
+          <select name="labels" id="labels" onChange={handleLabel} className="labels-filter" >
+              {
+                labelsArray.map((item) => 
+                  {
+                    return <option value={item.name}>{item.name}</option>
+                
+                  } 
+                )
+              }
+          </select>
+          {/* <Box sx={{ width:"10vw",margin:"1rem",backgroundColor:"white",color:"black" }}>
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Labels</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={state}
+          label="Labels"
+          onChange={handleLabel}
+        >
+          {labelsArray.map((item, pos) => {
+        return (
+          <MenuItem key={pos} value={item}>
+            {item.name}
+          </MenuItem>
+        )
+      })}
+        </Select>
+      </FormControl>
+    </Box> */}
+    
+      </div>
+
+      <div className="filter">
+        <label htmlFor="assignee" className="label">Assignee:</label>
+        <select name="assignee" id="assignee" onChange={handleAssignee} className="assignee-filter" >
           {
-            labels.map((item) => {
-              return <option value={item.name}>{item.name}</option>
-          
-          })}
-
-
+              assigneeArray.map((item) => 
+                {
+                  
+                    return <option value={item.login}>{item.login}</option>
+                
+                }
+              )
+          }
         </select>
+         {/* <Box sx={{ width:"10vw",margin:"1rem",backgroundColor:"white",color:"black" }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Assignee</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={state}
+              label="Assignee"
+              onChange={handleAssignee}
+            >
+              {assigneeArray.map((item, pos) => {
+            return (
+              <MenuItem key={pos} value={item}>
+                {item.login}
+              </MenuItem>
+            )
+          })}
+            </Select>
+          </FormControl>
+        </Box> */}
       </div>
       
     </div>
@@ -115,7 +204,7 @@ export default function BasicTable() {
           <TableRow>
             <TableCell style={{fontWeight:"bold"}}>Issues</TableCell>
             <TableCell style={{fontWeight:"bold"}}>State</TableCell>
-            <TableCell style={{fontWeight:"bold"}}>Created At</TableCell>
+            <TableCell style={{fontWeight:"bold"}}>Created On</TableCell>
             <TableCell style={{fontWeight:"bold"}}>Assignees</TableCell>
             <TableCell style={{fontWeight:"bold"}}>Labels</TableCell>
             
@@ -134,13 +223,13 @@ export default function BasicTable() {
                 {issue.state}
               </TableCell>
               <TableCell component="th" scope="row">
-                {issue.created_at}
+                {issue.created_at.substring(0,10)}
               </TableCell>
               <TableCell component="th" scope="row">
                 {issue.assignees.map(item=>item.login)}
               </TableCell>
               <TableCell component="th" scope="row">
-                {issue.labels.map(item=>item.name)}
+              <span class="badge badge-pill badge-danger">{issue.labels.map(item=>item.name)}</span>
               </TableCell>
               {/* <TableCell align="right">{row.calories}</TableCell> */}
             </TableRow>
