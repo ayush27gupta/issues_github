@@ -10,10 +10,7 @@ const IssuePage = () => {
 
     const location=useLocation();
     let loc=+location.state.issueID;
-    console.log(loc);
-
     const data=issues.filter(item=>item.id===loc);
-    console.log();
 
 
   return (
@@ -23,8 +20,6 @@ const IssuePage = () => {
                 <h5 className="card-title">{data.map(item=>item.title)}</h5>
                 <br />
                 <p className="card-text">{data.map(item=>item.body)}</p>
-                {/* <a href="#" className="card-link">Card link</a>
-                <a href="#" className="card-link">Another link</a> */}
             </div>
         </div>
     </div>
